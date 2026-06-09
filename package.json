@@ -1,0 +1,23 @@
+{
+  "name": "uploads",
+  "version": "1.0.0",
+  "description": "Used to automate the upload process",
+  "homepage": "https://github.com/amrinder1650/uploads#readme",
+  "bugs": {
+    "url": "https://github.com/amrinder1650/uploads/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amrinder1650/uploads.git"
+  },
+  "license": "ISC",
+  "author": "amrinder1650",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
