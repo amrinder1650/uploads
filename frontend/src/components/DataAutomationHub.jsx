@@ -44,6 +44,7 @@ const DataAutomationHub = () => {
         // 'rawData' is ready for .map(), .filter(), etc.
         // ---------------------------------------------------------
         console.log("Full data ready for manipulation: ", rawData);
+        sendDataToBackend(rawData)
 
       } catch (err) {
         setError('Error reading the file. Please ensure it is a valid Excel or CSV file.');
@@ -53,6 +54,26 @@ const DataAutomationHub = () => {
 
     reader.readAsArrayBuffer(file);
   };
+
+  const sendDataToBackend = (excelData) => {
+  // We use the Express server's URL and a new POST endpoint
+  fetch('http://localhost:3000/api/upload-data', {
+    method: 'POST', // 1. Specify the request type
+    headers: {
+      'Content-Type': 'application/json', // 2. Tell the server we are sending JSON
+    },
+    body: JSON.stringify(excelData), // 3. Convert the JavaScript objects into a text string
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log('Backend response:', result);
+      alert('Data successfully sent to backend!');
+    })
+    .catch((error) => {
+      console.error('Error sending data:', error);
+      alert('Failed to send data to backend.');
+    });
+};
 
   const triggerFileInput = () => {
     fileInputRef.current.click();
