@@ -29,6 +29,17 @@ app.post('/api/upload-data', (req, res) => {
     // save the history logs, or prepare the data for the government API.
     // -------------------------------------------------------------
 
+    const targetData = incomingData.filter(row => {
+      return !row.Name.includes('test') && !row.Name.includes('Test') && !row.Name.includes('client') && !row.Name.includes('Client');
+    });
+
+    const formattedData = targetData.map(row => ({
+      ...row,
+      Type: row.Type === `NHRSO` ? `Non-HRSO` : row.Type
+    }));
+
+    console.log(`formattedData`, formattedData);
+
     // 3. Always send a response back to React so it knows it succeeded
     res.json({
         success: true,
