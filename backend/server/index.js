@@ -43,7 +43,8 @@ app.post('/api/upload-data', (req, res) => {
     // 3. Always send a response back to React so it knows it succeeded
     res.json({
         success: true,
-        message: "Data securely received by the backend server."
+        message: "Data securely received by the backend server.",
+        data: formattedData // <--- Clean array returned to frontend
     });
 });
 

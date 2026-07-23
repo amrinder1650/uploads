@@ -46,6 +46,8 @@ const DataAutomationHub = () => {
         console.log("Full data ready for manipulation: ", rawData);
         sendDataToBackend(rawData)
 
+        handleProcessAndDownload(rawData);
+
       } catch (err) {
         setError('Error reading the file. Please ensure it is a valid Excel or CSV file.');
         console.error(err);
@@ -78,6 +80,40 @@ const DataAutomationHub = () => {
   const triggerFileInput = () => {
     fileInputRef.current.click();
   };
+
+  const handleProcessAndDownload = (excelRawData) => {
+  fetch('http://localhost:3000/api/upload-data', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(excelRawData),
+  })
+    .then((res) => res.json())
+    .then((response) => {
+      if (response.success && response.data) {
+
+        // 1. Convert the cleanly formatted JSON back into an Excel Worksheet
+        const worksheet = XLSX.utils.json_to_sheet(response.data);
+
+        // 2. Create a new SheetJS Workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Formatted Data");
+
+        // 3. Trigger the browser download automatically
+        const fileName = `Government_Upload_${new Date().toISOString().split('T')[0]}.xlsx`;
+        XLSX.writeFile(workbook, fileName);
+
+        alert(`Success! Saved formatted file as ${fileName}`);
+      } else {
+        alert("Failed to process data on backend.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error during processing:", error);
+      alert("Error connecting to server.");
+    });
+};
 
   // --- Styles ---
   const styles = {
