@@ -9,7 +9,7 @@ app.use(cors({
     methods: ['GET', 'POST']         // Allowed request types
 }))
 
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: '5000mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 app.get('/', (req, res) => {
@@ -30,12 +30,12 @@ app.post('/api/upload-data', (req, res) => {
     // -------------------------------------------------------------
 
     const targetData = incomingData.filter(row => {
-      return !row.Name.includes('test') && !row.Name.includes('Test') && !row.Name.includes('client') && !row.Name.includes('Client');
+      return !row['CASE NAME'].includes('test') && !row['CASE NAME'].includes('Test') && !row['CASE NAME'].includes('client') && !row['CASE NAME'].includes('Client');
     });
 
     const formattedData = targetData.map(row => ({
       ...row,
-      Type: row.Type === `NHRSO` ? `Non-HRSO` : row.Type
+      Type: row.Code === `NHRSO` ? `Non-HRSO` : row.Code
     }));
 
     console.log(`formattedData`, formattedData);
